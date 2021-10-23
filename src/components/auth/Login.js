@@ -3,33 +3,18 @@ import { Link } from 'react-router-dom';
 import { Button, color } from '@material-ui/core';
 
 
-const Login = ({ datosConsulta, componente}) => {
+const Login = ({ datosConsulta, componente }) => {
 
-    //State Iniciar Sesion
 
-    // const [usuario, guardarUsuario] = useState({
-    //     email: '',
-    //     password: ''
-    // });
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    //extraer del usuario
-    // const { email, password } = usuario;
-
-    // const onChange = e => {
-    //     guardarUsuario({
-    //         ...usuario,
-    //         [e.target.name]: [e.target.value]
-    //     })
-    // }
-
 
     const loginPage = async () => {
         const userData = {
             email: email,
             password: password
         }
-        //console.log(JSON.stringify(userData));
+        console.log(JSON.stringify(userData));
 
         try {
             const response = await fetch("http://localhost:4000/auth", {
@@ -41,10 +26,17 @@ const Login = ({ datosConsulta, componente}) => {
             });
             const user = await response.json();
             console.log(user);
+            if (user.payload.email === email ) {
+                window.location.href = "/nueva-cuenta";
+            } else {
+                console.log("Error111");
+            }
+
         } catch (e) {
             console.log(e)
         }
     }
+
 
     //Cuando Inicie Sesion
 
@@ -54,6 +46,7 @@ const Login = ({ datosConsulta, componente}) => {
         datosConsulta(email, password);
 
     }
+
 
     return (
         <div className="form-usuario">

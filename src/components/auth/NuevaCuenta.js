@@ -1,40 +1,62 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { Button, color } from '@material-ui/core';
 
 const NuevaCuenta = () => {
 
     //State Iniciar Sesion
 
-    const [usuario, guardarUsuario] = useState({
-        nombre: '',
-        email: '',
-        password: '',
-        confirmar: ''
-    });
 
-    //extraer del usuario
-    const { nombre, email, password, confirmar } = usuario;
+    const [nombre, setNombre] = useState("");
+    const [email, setEmail] = useState("");
+    const [pais, setPais] = useState("");
+    const [ciudad, setCiudad] = useState("");
+    const [rol, setRol] = useState("");
+    const [nombreTienda, setNombreTienda] = useState("");
+    const [password, setPassword] = useState("");
 
-    const onChange = e => {
-        guardarUsuario({
-            ...usuario,
-            [e.target.name]: [e.target.value]
-        })
-    }
 
     //Cuando Inicie Sesion
 
-    const onSubmit = e => {
-        e.preventDefault();
-     if(nombre === ''){
-         return(console.log("hola"))
-     }
-     guardarUsuario(e.nombre)
-     guardarUsuario(e.email)
-     guardarUsuario(e.password)
-     guardarUsuario(e.confirmar)
+    // const onSubmit = e => {
+    //     e.preventDefault();
+    //     if (nombre === '') {
+    //         return (console.log("hola"))
+    //     }
+    //     guardarUsuario(e.nombre)
+    //     guardarUsuario(e.email)
+    //     guardarUsuario(e.password)
+    //     guardarUsuario(e.confirmar)
+    // }
+
+    const users = async () => {
+        const userData = {
+            name: nombre,
+            email: email,
+            country: pais,
+            city: ciudad,
+            password: password,
+            rol: rol,
+            nameStore: nombreTienda
+        }
+        console.log(JSON.stringify(userData));
+
+        try {
+            const response = await fetch("http://localhost:4000/usuarios", {
+                method: 'POST',
+                body: JSON.stringify(userData),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const user = await response.json();
+            console.log(user);
+        } catch (e) {
+            console.log(e)
+        }
     }
+
+
 
     return (
         <div className="form-usuario">
@@ -42,7 +64,7 @@ const NuevaCuenta = () => {
                 <h1>Obtener una cuenta</h1>
 
                 <form
-                    // onSubmit={onSubmit}
+                // onSubmit={onSubmit}
                 >
 
                     <div className="campo-form">
@@ -52,8 +74,8 @@ const NuevaCuenta = () => {
                             id="nombre"
                             name="nombre"
                             placeholder="Nombre"
-                            onChange={onChange}
-                            value={nombre}
+                            onChange={e => setNombre(e.target.value)}
+
                         />
                     </div>
 
@@ -64,8 +86,32 @@ const NuevaCuenta = () => {
                             id="email"
                             name="email"
                             placeholder="Correo Electrónico"
-                            onChange={onChange}
-                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+
+                        />
+                    </div>
+
+                    <div className="campo-form">
+                        <label htmlFor="pais">Pais</label>
+                        <input
+                            type="text"
+                            id="pais"
+                            name="pais"
+                            placeholder="Pais"
+                            onChange={e => setPais(e.target.value)}
+
+                        />
+                    </div>
+
+                    <div className="campo-form">
+                        <label htmlFor="ciudad">Ciudad</label>
+                        <input
+                            type="text"
+                            id="ciudad"
+                            name="ciudad"
+                            placeholder="Ciudad"
+                            onChange={e => setCiudad(e.target.value)}
+
                         />
                     </div>
 
@@ -75,26 +121,38 @@ const NuevaCuenta = () => {
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Contraseña"
-                            value={password}
-                            onChange={onChange}
+                            placeholder="Password"
+                            onChange={e => setPassword(e.target.value)}
+
                         />
                     </div>
 
                     <div className="campo-form">
-                        <label htmlFor="confirmar">Confirmar Password</label>
+                        <label htmlFor="Rol">Rol</label>
                         <input
-                            type="password"
-                            id="confirmar"
-                            name="confirmar"
-                            placeholder="Repite tu Password"
-                            value={confirmar}
-                            onChange={onChange}
+                            type="text"
+                            id="rol"
+                            name="rol"
+                            placeholder="Vendedor/Usuario"
+                            onChange={e => setRol(e.target.value)}
+
                         />
                     </div>
 
                     <div className="campo-form">
-                        <input type="submit" className="btn btn-primario btn-block"
+                        <label htmlFor="nombreTienda">Nombre Tienda</label>
+                        <input
+                            type="text"
+                            id="nombreTienda"
+                            name="nombreTienda"
+                            placeholder="nombre Tienda"
+                            onChange={e => setNombreTienda(e.target.value)}
+
+                        />
+                    </div>
+
+                    <div className="campo-form">
+                        <input type="submit" className="btn btn-primario btn-block" onClick={users}
                             value="Registrarme"
                         />
                     </div>
