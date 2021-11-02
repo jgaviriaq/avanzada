@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, color } from '@material-ui/core';
-
+import Error from '../error/Error';
 
 const Login = ({ datosConsulta, componente }) => {
 
@@ -26,7 +26,7 @@ const Login = ({ datosConsulta, componente }) => {
             });
             const user = await response.json();
             console.log(user);
-            if (user.payload.email === email ) {
+            if (user.payload.email === email) {
                 window.location.href = "/nueva-cuenta";
             } else {
                 console.log("Error111");
@@ -40,12 +40,14 @@ const Login = ({ datosConsulta, componente }) => {
 
     //Cuando Inicie Sesion
 
+
     const onSubmit = e => {
         e.preventDefault();
 
         datosConsulta(email, password);
 
     }
+
 
 
     return (
@@ -59,7 +61,7 @@ const Login = ({ datosConsulta, componente }) => {
                     <div className="campo-form">
                         <label htmlFor="email">Email</label>
                         <input
-                            type="email"
+                            type="text"
                             id="email"
                             name="email"
                             placeholder="Correo Electrónico"
@@ -89,7 +91,12 @@ const Login = ({ datosConsulta, componente }) => {
                 <Link to={'/nueva-cuenta'} className="enlace-cuenta">
                     Registrarseee
                 </Link>
-                {componente}
+                <div className="card-panel red darken-4 error col 12">
+                    {componente}
+                </div>
+
+
+
             </div>
         </div>
 
